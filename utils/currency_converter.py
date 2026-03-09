@@ -6,4 +6,5 @@ def convert_amount(amount, from_currency, to_currency):
         return amount / 3.75
     elif from_currency == "USD" and to_currency == "SAR":
         return amount * 3.75
+    #return same amount
     return amount
