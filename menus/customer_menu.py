@@ -1,6 +1,7 @@
 # menus/customer_menu.py
 from utils.validators import validate_amount
 from utils.file_manager import load_data, save_data
+from classes.Transactions import Transaction
 
 def show_customer_menu(customer):
     """Display customer menu and handle choices"""
@@ -55,6 +56,13 @@ def deposit(customer):
                 c["balance"] = customer.balance
                 break
         save_data("customers.json", customers)
+
+        #to record transaction:deposit,withdraw,transfer:
+        t = Transaction(customer.id, customer.id, amount, "deposit")
+        transactions = load_data("transactions.json")
+        transactions.append(t.to_dict())
+        save_data("transactions.json", transactions)
+
         
         print(f"✅ {message}")
     else:
