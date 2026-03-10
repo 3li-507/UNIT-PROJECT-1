@@ -53,8 +53,7 @@ after sign in successfully:
 - Transfer
 - Logout 
 
-Author
-
+by:
 Ali Alshehri
 
 
