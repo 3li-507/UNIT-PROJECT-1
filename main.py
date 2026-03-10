@@ -1,4 +1,6 @@
 # main.py
+from colorama import Fore , Back, Style
+
 from menus.auth_menu import show_main_menu, sign_in, sign_up
 from menus.customer_menu import show_customer_menu
 from classes.customer import Customer
@@ -7,8 +9,12 @@ from utils.id_generator import generate_customer_id
 
 def main():
     """Main program loop"""
-    
-    while True:
+    #def show_customer_menu(customer):  
+     #print(f"Debug (in menu): balance={customer.balance}")
+    #  pass
+
+while True:
+    try:
         choice = show_main_menu()
         
         if choice == "1":
@@ -26,15 +32,17 @@ def main():
                         c_data["id"],
                         c_data["name"],
                         c_data["password"],
-                        c_data.get("balance", 0.0)  # إذا ما كان فيه balance, استخدم 0
+                        c_data.get("balance", 0.0)  # if there is no balance put 0.0
                     )
                     break
             
             if found_customer:
-                print(f"\n✅ Welcome back, {found_customer.name}!")
+                print(f"\n Welcome back, {found_customer.name}!")
+                # print(f"Debug- Balance from file: {c_data['balance']}")
+                # print(f"Debug- Customer object balance: {found_customer.balance}")
                 show_customer_menu(found_customer)
             else:
-                print("\n❌ Invalid ID or password")
+                print(f"\n{Fore.RED} Invalid ID or password{Style.RESET_ALL}")
         
         elif choice == "2":
             # Sign Up
@@ -54,15 +62,19 @@ def main():
                 customers.append(new_customer.to_dict())
                 save_data("customers.json", customers)
                 
-                print(f"\n✅ Account created successfully!")
+                print(f"\n{Fore.GREEN}Account created successfully!{Style.RESET_ALL}")
                 print(f"   Your ID is: {new_id}")
                 print("   Please sign in with your new ID")
         
         elif choice == "3":
-            print("\n👋 Thank you for using Central Bank System. Goodbye!")
+            print("\n Thank you for using our Bank System. Goodbye!")
             break
         
         input("\nPress Enter to continue...")
+    except Exception as e:
+            print(f"Error: {e}")
+    except:
+        print("Some error happened")
 
 if __name__ == "__main__":
     main()

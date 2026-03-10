@@ -108,8 +108,31 @@ from colorama import Style,Fore,Back
 #     print("Customer 400001 not found!")
 
 # test.py
-print("Testing...")
-from menus.auth_menu import show_main_menu
-print("Import successful")
-choice = show_main_menu()
-print(f"You chose: {choice}")
+# print("Testing...")
+# from menus.auth_menu import show_main_menu
+# print("Import successful")
+# choice = show_main_menu()
+# print(f"You chose: {choice}")
+
+from getpass import getpass
+
+# # بيانات صحيحة (مثال)
+# correct_username = "ali"
+# correct_password = "Aa123"
+
+# # إدخال المستخدم
+# username = input("Enter username: ")
+# password = getpass("Enter password: ")
+
+# # التحقق
+# if username == correct_username and password == correct_password:
+#     print("Login successful")
+# else:
+#     print("Invalid username or password")
+from classes.customer import Customer
+from utils.file_manager import load_data, save_data
+
+from colorama import Fore, Back, Style
+
+print(f"{Fore.RED}{Back.BLUE}{Style.BRIGHT}Hello{Style.RESET_ALL}")
+print()

@@ -25,8 +25,12 @@ def load_data(filename):
             return {}
         return []
     except json.JSONDecodeError:
-        print(f"⚠️ Error reading {filename}. File might be corrupted.")
+        print(f" Error reading {filename}. File might be corrupted.")
         return [] if filename != "admin.json" else {}
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+    except:
+        print("some error happened")
 
 def save_data(filename, data):
     """

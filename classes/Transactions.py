@@ -2,7 +2,7 @@
 from datetime import datetime
 
 class Transaction:
-    def init(self, from_id, to_id, amount, trans_type):
+    def __init__(self, from_id, to_id, amount, trans_type):
         self.from_id = from_id
         self.to_id = to_id
         self.amount = amount

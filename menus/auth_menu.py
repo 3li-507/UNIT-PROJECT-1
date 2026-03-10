@@ -1,4 +1,4 @@
-
+from colorama import Fore,Style,Back
 from classes.customer import Customer
 
 
@@ -6,9 +6,9 @@ from classes.customer import Customer
 
 def show_main_menu():
     """Display main menu options"""
-    print("\n" + "="*40)
-    print("     CENTRAL BANK SYSTEM")
-    print("="*40)
+    print("\n" + "="*20)
+    print(f"  {Back.WHITE}BANK SYSTEM {Style.RESET_ALL}")
+    print("="*20)
     print("1. Sign In")
     print("2. Sign Up")
     print("3. Exit")
@@ -16,19 +16,30 @@ def show_main_menu():
 
 def sign_in():
     """Get sign in credentials"""
-    customer_id = input("Enter ID: ")
-    password = input("Enter password: ")
-    return customer_id, password
+
+    try:
+        customer_id = input("Enter ID: ")
+        password = input("Enter password: ")
+
+        return customer_id, password
+
+    except:
+        print("some error happened")
+    
+
 
 def sign_up():
     """Get new account information"""
-    print("\n--- New Account ---")
-    name = input("Enter full name: ")
-    password = input("Enter password: ")
-    confirm = input("Confirm password: ")
+    try:
+        print("\n--- New Account ---")
+        name = input("Enter your name: ")
+        password = input("Enter password: ")
+        confirm = input("Confirm password: ")
     
-    if password != confirm:
-        print("❌ Passwords don't match!")
-        return None
+        if password != confirm:
+            print(f"{Fore.RED} Passwords don't match!{Style.RESET_ALL}")
+            return None
     
-    return name, password  
+        return name, password  
+    except:
+        print("Some error happened")

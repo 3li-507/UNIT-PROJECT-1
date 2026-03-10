@@ -1,4 +1,6 @@
 # menus/customer_menu.py
+from colorama import Fore,Style,Back
+
 from utils.validators import validate_amount
 from utils.file_manager import load_data, save_data
 from classes.Transactions import Transaction
@@ -7,141 +9,182 @@ def show_customer_menu(customer):
     """Display customer menu and handle choices"""
     
     while True:
-        print("\n" + "="*40)
-        print(f"     Welcome {customer.name} 👋")
-        print("="*40)
-        print("1. 💰 Deposit")
-        print("2. 💸 Withdraw")
-        print("3. 📊 Show Balance")
-        print("4. Transfer")
-        print("5. Logout")
-        print("="*40)
+            
+        try:
+            print("\n" + "="*20)
+            print(f"   {Back.BLUE} Welcome {customer.name} {Style.RESET_ALL}")
+            print("="*40)
+            print(f"{Fore.MAGENTA}1.Deposit")
+            print("2.Withdraw")
+            print("3.Show Balance")
+            print("4.Transfer")
+            print(f"5.Logout{Style.RESET_ALL}")
+            print("="*20)
         
-        choice = input("Choose (1-4): ")
+            choice = input("Choose (1-5): ")
         
-        if choice == "1":
-            deposit(customer)
-        elif choice == "2":
-            withdraw(customer)
-        elif choice == "3":
-            show_balance(customer)
-        elif choice == "4":
-            transfer(customer)
-        elif choice == "5":
-            print("👋 Logging out...")
-            break
-        else:
-            print("❌ Invalid choice")
+            if choice == "1":
+                deposit(customer)
+            elif choice == "2":
+                withdraw(customer)
+            elif choice == "3":
+                show_balance(customer)
+            elif choice == "4":
+                transfer(customer)
+            elif choice == "5":
+                print(f"{Fore.CYAN}Logging out...{Style.RESET_ALL}")
+                break
+            else:
+                print(f"{Fore.RED}Invalid choice{Style.RESET_ALL}")
         
-        input("\nPress Enter to continue...")
+            input("\nPress Enter to continue...")
+        except Exception as e:
+            print(f"Error: {e}")
+        except:
+            print(f"{Fore.YELLOW}Some error happened{Style.RESET_ALL}")
 
 def deposit(customer):
-    """Handle deposit operation"""
-    print("\n--- Deposit ---")
+        """Handle deposit operation"""
+        try:
+            print("\n--- Deposit ---")
     
-    amount = input("Enter amount to deposit: ")
+            amount = input("Enter amount to deposit: ")
     
-    if not validate_amount(amount):
-        print("❌ Invalid amount. Please enter a positive number.")
-        return
+            if not validate_amount(amount):
+                print(f"{Fore.RED} Invalid amount. Please enter a positive number.{Style.RESET_ALL}")
+                return 
     
-    amount = float(amount)
-    success, message = customer.deposit(amount)
+            amount = float(amount)
+            success, message = customer.deposit(amount)
     
-    if success:
-        # Update balance in JSON
-        customers = load_data("customers.json")
-        for c in customers:
-            if c["id"] == customer.id:
-                c["balance"] = customer.balance
-                break
-        save_data("customers.json", customers)
+            if success:
+                # Update balance in JSON
+                customers = load_data("customers.json")
+                for c in customers:
+                    if c["id"] == customer.id:
+                        c["balance"] = customer.balance
+                        break
+                save_data("customers.json", customers)
 
-        #to record transaction:deposit,withdraw,transfer:
-        t = Transaction(customer.id, customer.id, amount, "deposit")
-        transactions = load_data("transactions.json")
-        transactions.append(t.to_dict())
-        save_data("transactions.json", transactions)
+                #to record transaction(deposit):
+                t = Transaction(customer.id, customer.id, amount, "deposit")
+                transactions = load_data("transactions.json")
+                transactions.append(t.to_dict())
+                save_data("transactions.json", transactions)
 
         
-        print(f"✅ {message}")
-    else:
-        print(f"❌ {message}")
+                print(f"{Fore.GREEN} {message}{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.GREEN} {message}{Style.RESET_ALL}")
+
+        except Exception as e:
+            print(f"Error: {e}")
+        except:
+            print("Some error happened")
 
 def withdraw(customer):
     """Handle withdraw operation"""
-    print("\n--- Withdraw ---")
+    try:
+        print("\n--- Withdraw ---")
     
-    amount = input("Enter amount to withdraw: ")
+        amount = input("Enter amount to withdraw: ")
     
-    if not validate_amount(amount):
-        print("❌ Invalid amount. Please enter a positive number.")
-        return
+        if not validate_amount(amount):
+            print(f"{Fore.RED} Invalid amount. Please enter a positive number.{Style.RESET_ALL}")
+            return
     
-    amount = float(amount)
-    success, message = customer.withdraw(amount)
+        amount = float(amount)
+        success, message = customer.withdraw(amount)
     
-    if success:
-        # Update balance in JSON
-        customers = load_data("customers.json")
-        for c in customers:
-            if c["id"] == customer.id:
-                c["balance"] = customer.balance
-                break
-        save_data("customers.json", customers)
+        if success:
+            # Update balance in JSON
+            customers = load_data("customers.json")
+            for c in customers:
+                if c["id"] == customer.id:
+                    c["balance"] = customer.balance
+                    break
+            save_data("customers.json", customers)
+
+            #to record transaction(Withdraw):
+            t = Transaction(customer.id, customer.id, amount, "withdraw")
+            transactions = load_data("transactions.json")
+            transactions.append(t.to_dict())
+            save_data("transactions.json", transactions)
         
-        print(f"✅ {message}")
-    else:
-        print(f"❌ {message}")
+            print(f"{Fore.GREEN} {message}{Style.RESET_ALL}")
+        else:
+            print(f"{Fore.RED} {message}{Style.RESET_ALL}")
+
+    except Exception as e:
+            print(f"Error: {e}")
+    except:
+        print("Some error happened")
 
 def show_balance(customer):
     """Display current balance"""
-    print(f"\n💰 Current balance: {customer.balance} SAR")
+    print(f"\n Current balance: {Fore.CYAN}{customer.balance} SAR{Style.RESET_ALL}")
 
 def transfer(customer):
     """Handle transfer to another customer"""
-    print("\n--- Transfer ---")
+    try:
+        print("\n--- Transfer ---")
     
-    # 1. 
-    to_id = input("Enter recipient ID: ")
+        # 1. 
+        to_id = input("Enter recipient ID: ")
     
-    # 2. 
-    customers_data = load_data("customers.json")
-    recipient = None
+        # 2. 
+        customers_data = load_data("customers.json")
+        recipient = None
     
-    for c in customers_data:
-        if c["id"] == to_id:
-            recipient = c
-            break
+        for c in customers_data:
+            if c["id"] == to_id:
+                recipient = c
+                break
     
-    if not recipient:
-        print("❌ Recipient not found")
-        return
+        if not recipient:
+            print(f"{Fore.RED} Recipient not found{Style.RESET_ALL}")
+            return
     
-    # 3. إدخال المبلغ
-    amount = input("Enter amount: ")
-    if not validate_amount(amount):
-        print("❌ Invalid amount")
-        return
+        # 3. 
+        amount = input("Enter amount: ")
+        if not validate_amount(amount):
+            print(f"{Fore.RED} Invalid amount{Style.RESET_ALL}")
+            return
     
-    amount = float(amount)
+        amount = float(amount)
     
-    # 4. التحقق من الرصيد
-    if customer.balance < amount:
-        print("❌ Insufficient balance")
-        return
+        # 4.
+        if customer.balance < amount:
+            print(f"{Fore.RED} Insufficient balance{Style.RESET_ALL}")
+            return
     
-    # 5. تنفيذ التحويل
-    customer.balance -= amount
-    recipient["balance"] += amount
+        # 5. 
+        customer.balance -= amount
+        recipient["balance"] += amount
+        
     
-    # 6. تحديث الملف
-    for c in customers_data:
-        if c["id"] == customer.id:
-            c["balance"] = customer.balance
-            break
+        # 6. 
+        for c in customers_data:
+            if c["id"] == customer.id:
+                c["balance"] = customer.balance
+                break
     
-    save_data("customers.json", customers_data)
+        save_data("customers.json", customers_data)
+    #to record transaction(transfer):
+        t = Transaction(customer.id, to_id, amount, "transfer")
+        transactions = load_data("transactions.json")
+        transactions.append(t.to_dict())
+        save_data("transactions.json", transactions)
+        
+        # print(f"{Fore.GREEN} {message}{Style.RESET_ALL}")
+        
+        # print(f"{Fore.RED} {message}{Style.RESET_ALL}")
+       
     
-    print(f"\n✅ Transferred {amount} SAR to {recipient['name']}")
-    print(f"   Your new balance: {customer.balance} SAR")
+        print(f"\n{Fore.GREEN} Transferred {amount} SAR to {recipient['name']}{Style.RESET_ALL}")
+        print(f"   Your new balance: {customer.balance} SAR")
+
+    except Exception as e:
+            print(f"Error: {e}")
+    except:
+        print("Some error happened")

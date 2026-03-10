@@ -1,8 +1,10 @@
 from classes.user import User
 
+from colorama import Fore,Style
+
 class Customer(User):
 
-    def __init__(self,id,name,password,is_frozen:bool,balance=0):
+    def __init__(self,id,name,password,balance=0.0):
 
         #super() refers to Class User    
         super().__init__(id,name,password)
@@ -10,6 +12,8 @@ class Customer(User):
         # additional property for customer:
         
         self.balance=balance
+
+        #print(f"DEBUG in Customer __init__: id={id}, balance={balance}")
         
         
 
@@ -17,20 +21,20 @@ class Customer(User):
         if amount>0:
             self.balance+=amount
 
-            return True,f'Deposited {amount} successfully. New balance: {self.balance}'
+            return True,f'{Fore.GREEN}Deposited {amount} successfully. New balance: {self.balance}{Style.RESET_ALL}'
        
-        return False,f'failed deposit'
+        return False,f'{Fore.RED}failed deposit{Style.RESET_ALL}'
     
     def withdraw(self,amount):
         
         if amount<=0:
-            return False,f'amount must be <0'
+            return False,f'{Fore.RED}amount must be <0{Style.RESET_ALL}'
         
         if self.balance<amount:
-            return False,f"Insufficient balance. Current balance: {self.balance}"
+            return False,f"{Fore.RED}Insufficient balance. {Style.RESET_ALL}Current balance: {self.balance}"
         
         self.balance-=amount
-        return True,f"Withdraw {amount} successfully. New Balance: {self.balance}"
+        return True,f"{Fore.GREEN}Withdraw {amount} successfully.{Style.RESET_ALL} New Balance: {self.balance}"
     
     def show_balance(self):
         return f"Current balance: {self.balance}"
