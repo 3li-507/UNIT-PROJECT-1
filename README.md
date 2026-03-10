@@ -8,7 +8,7 @@
 - Organize Your Code into modules & (or packages)
 - Use git & Github to track changes in your code.
 
-Bank System CLI
+# Bank System CLI
 
 Overview
 
@@ -18,7 +18,7 @@ The system allows users to register, login, deposit money, withdraw money, trans
 
 Customer data and transactions are stored in JSON files.
 
-Features & User Stories
+## Features & User Stories
 
 As a customer I can:
 

@@ -12,7 +12,7 @@ def generate_customer_id():
      if not customers:
         return "100001"
     
-    # Find the highest ID
+    # Find the highest id
      max_id = 0
      for c in customers:
         try:
